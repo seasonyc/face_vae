@@ -84,10 +84,7 @@ def create_encoder(latent_channel_num, norm_func):
 def create_decoder(first_conv_shape, norm_func):
     decoder_input = Input(shape=(first_conv_shape[1], first_conv_shape[2], first_conv_shape[3]), name='latent_z')
     x = Conv2D(256, 1)(decoder_input)
-    '''
-    x = transpose_conv_block(x, 128, norm_func=norm_func)
-    x = transpose_conv_block(x, 64, norm_func=norm_func)
-    '''
+
     x = upsampling_conv_block(x, 128, norm_func=norm_func)
     x = upsampling_conv_block(x, 64, norm_func=norm_func)
     x = Conv2D(3, 4, padding='same', use_bias=False)(x)
@@ -145,7 +142,7 @@ x_train, train_size = dataset.load_celeba('CelebA', batch_size, part='train')
 x_val, val_size = dataset.load_celeba('CelebA', batch_size, part='val')
 
 
-def train(selected_pm_layers, alpha = 1.0, latent_channel_num = 128, learning_rate = 0.0005,
+def train(selected_pm_layers, alpha = 1.0, latent_channel_num = 8, learning_rate = 0.0005,
           norm_func_e = InstanceNormalization, norm_func_d = InstanceNormalization, trained_model = None):
     from tensorflow.keras.models import model_from_json
      
@@ -156,22 +153,19 @@ def train(selected_pm_layers, alpha = 1.0, latent_channel_num = 128, learning_ra
     pm.load_weights('model/facenet_weights.h5')
      
     #pm.summary()
-    '''
-    # selected for calculating the perceptual loss.
-    selected_pm_layers = ['Conv2d_1a_3x3_Activation', 'Conv2d_2b_3x3_Activation', 'Conv2d_4a_3x3_Activation',
-                          'Block35_5_Activation',
-                          'Block17_10_Activation', 'add_21', 'Bottleneck']
     
-    selected_pm_layers = ['Conv2d_1a_3x3','Conv2d_2b_3x3', 'Conv2d_4a_3x3']
-    '''
     def perceptual_loss(input_img, rec_img):
         '''Perceptual loss for the DFC VAE'''
         outputs = [pm.get_layer(l).output for l in selected_pm_layers]
+        
         model = Model(pm.input, outputs)
     
         h1_list = model(input_img)
         h2_list = model(rec_img)
-        
+        if not isinstance(h1_list, list):
+            h1_list = [h1_list]
+            h2_list = [h2_list]
+                
         p_loss = 0.0
         
         for h1, h2 in zip(h1_list, h2_list):
@@ -247,18 +241,23 @@ test_vae(vae_dfc)
 
 '''
 
+
+# selected for calculating the perceptual loss.
 selected_pm_layers = ['Conv2d_1a_3x3', 'Conv2d_2b_3x3', 'Conv2d_4a_3x3', 'Conv2d_4b_3x3', 'Bottleneck']
 
-
-vae_dfc = train(selected_pm_layers, alpha = 1.0, latent_channel_num = 24)
+vae_dfc = train(selected_pm_layers, alpha = 1.0, latent_channel_num = 1)
 save_model(vae_dfc, 'face-vae' + str(time.time()))
 test_vae(vae_dfc)
 
-vae_dfc = train(selected_pm_layers, alpha = 1.0, latent_channel_num = 12)
+vae_dfc = train(selected_pm_layers, alpha = 0.5)
 save_model(vae_dfc, 'face-vae' + str(time.time()))
 test_vae(vae_dfc)
 
-vae_dfc = train(selected_pm_layers, alpha = 1.0, latent_channel_num = 48)
+
+
+selected_pm_layers = ['Bottleneck']
+
+vae_dfc = train(selected_pm_layers)
 save_model(vae_dfc, 'face-vae' + str(time.time()))
 test_vae(vae_dfc)
 

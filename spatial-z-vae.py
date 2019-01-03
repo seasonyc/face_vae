@@ -244,12 +244,12 @@ test_vae(vae_dfc)
 
 # selected for calculating the perceptual loss.
 selected_pm_layers = ['Conv2d_1a_3x3', 'Conv2d_2b_3x3', 'Conv2d_4a_3x3', 'Conv2d_4b_3x3', 'Bottleneck']
-
+'''
 vae_dfc = train(selected_pm_layers, alpha = 1.0, latent_channel_num = 1)
 save_model(vae_dfc, 'face-vae' + str(time.time()))
 test_vae(vae_dfc)
-
-vae_dfc = train(selected_pm_layers, alpha = 0.5)
+'''
+vae_dfc = train(selected_pm_layers)
 save_model(vae_dfc, 'face-vae' + str(time.time()))
 test_vae(vae_dfc)
 

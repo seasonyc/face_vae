@@ -2,6 +2,21 @@
 from __future__ import print_function 
 import numpy as np  
 
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
+def img_renorm(img):
+    return (img + 1.0) / 2.0
+
+def plot_image(input_images, rec_images):
+    for x, r in zip(input_images, rec_images):
+        plt.subplot(1, 2, 1)
+        plt.imshow(x)
+        plt.subplot(1, 2, 2)
+        plt.imshow(r)
+        plt.show()
+        
 def save_model(model, name):
     json_string = model.to_json()
     file = open(name + '.json', 'w') 

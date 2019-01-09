@@ -136,10 +136,10 @@ def load_full_celeba_with_labels(data_dir, batch_size, atts, prefetch_batch=1, n
     att_id = [att_dict[att] + 1 for att in atts]
     labels = np.loadtxt(list_file, skiprows=2, usecols=att_id, dtype=np.int8)
 
-    '''
-    img_paths = img_paths[202400:]
-    labels = labels[202400:]
-    '''
+    # because norm layers are trained by training set, this function actually loads full training data 
+    img_paths = img_paths[:162770] 
+    labels = labels[:162770]
+ 
     img_num = len(img_paths)
     
     

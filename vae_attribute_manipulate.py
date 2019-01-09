@@ -146,6 +146,7 @@ merge_2(vae_dfc, 'test_attr_trans_from_CelebA/201220.jpg', 'test_attr_trans_from
 compute_attribute_vector(vae_dfc, attrs, 'attribute_vectors_12ch_good.npy')
 
 trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202033.jpg', 'attribute_vectors_12ch_good.npy', {'Attractive':1,'Smiling':1})
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202443.jpg', 'attribute_vectors_12ch_good.npy', {'Smiling':1})
 
 trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/201207.jpg', 'attribute_vectors_12ch_good.npy', {'Male':1,'Blond_Hair':-1})
 trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/201278.jpg', 'attribute_vectors_12ch_good.npy', {'Male':1})
@@ -156,7 +157,6 @@ trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202016.jpg', 'attribute_ve
 trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/200235.jpg', 'attribute_vectors_12ch_good.npy', {'Male':-1,'Attractive':1})
 trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202052.jpg', 'attribute_vectors_12ch_good.npy', {'Male':-1})
 trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202163.jpg', 'attribute_vectors_12ch_good.npy', {'Male':-1,'Attractive':1})
-trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202443.jpg', 'attribute_vectors_12ch_good.npy', {'Male':-1,'Young':1})
 trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202516.jpg', 'attribute_vectors_12ch_good.npy', {'Male':-1,'Blond_Hair':1})
 
 

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function 
 import numpy as np  
+import time
 
 import matplotlib
 matplotlib.use('Agg')
@@ -9,12 +10,14 @@ import matplotlib.pyplot as plt
 def img_renorm(img):
     return (img + 1.0) / 2.0
 
-def plot_image(input_images, rec_images):
+def plot_image(input_images, rec_images, save_image=True):
     for x, r in zip(input_images, rec_images):
         plt.subplot(1, 2, 1)
         plt.imshow(x)
         plt.subplot(1, 2, 2)
         plt.imshow(r)
+        if save_image:
+            plt.savefig('image_pair'+ str(time.time()) + '.jpg')
         plt.show()
         
 def save_model(model, name):
@@ -46,7 +49,7 @@ def load_index():
     print(index_t[0:20])
 
 
-def plot_images(images):
+def plot_images(images, save_image=True):
     num = len(images)
     fig = plt.figure(figsize = (num*2,1*2))
     i = 1
@@ -55,4 +58,7 @@ def plot_images(images):
         plt.imshow(image, aspect='auto')
         plt.axis('off')
         i += 1
+    if save_image:
+        plt.savefig('images'+ str(time.time()) + '.jpg')
     plt.show()
+

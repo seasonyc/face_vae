@@ -37,7 +37,7 @@ def load_celeba(data_dir, batch_size, prefetch_batch=1, num_threads=4, buffer_si
         return file
     
     dataset = tf.data.Dataset.from_tensor_slices(img_paths)
-    # celebA files are shuffled already, don't shuffle here, reading the files consecutively may have better performance
+    # celebA files are shuffled already, don't shuffle here, reading the files consecutively may have better performance(because files may not be placed consecutively in the disk)
     # cache the files in memory to read disk only once, otherwise use TFRecord to speed up disk reading
     dataset = dataset.map(load_func, num_parallel_calls=num_threads)
     dataset = dataset.cache()

@@ -44,3 +44,15 @@ def load_index():
     index_t = np.load("test_index.npy")
     print(index_v[0:20])
     print(index_t[0:20])
+
+
+def plot_images(images):
+    num = len(images)
+    fig = plt.figure(figsize = (num*2,1*2))
+    i = 1
+    for image in images:
+        plt.subplot(1, num, i)
+        plt.imshow(image, aspect='auto')
+        plt.axis('off')
+        i += 1
+    plt.show()

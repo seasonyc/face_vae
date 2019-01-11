@@ -21,7 +21,7 @@ Linear interpolation between 2 faces:
 ![](https://github.com/seasonyc/Spatial-Z-VAE/blob/master/pictures/images1547095219.6064727.jpg)
 ![](https://github.com/seasonyc/Spatial-Z-VAE/blob/master/pictures/images1547095340.6845298.jpg)
 
-More result exaples are in https://github.com/seasonyc/Spatial-Z-VAE/tree/master/pictures
+More result examples are in https://github.com/seasonyc/Spatial-Z-VAE/tree/master/pictures
 
 
 ## Usage:

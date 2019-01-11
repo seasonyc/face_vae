@@ -12,7 +12,7 @@ Smiling:
 
 ![](https://github.com/seasonyc/Spatial-Z-VAE/blob/master/pictures/image_pair1547048628.0408874.jpg)
 
-Gender exchange with some attribute tras or not:
+Gender exchange with some attribute trans or not:
 
 ![](https://github.com/seasonyc/Spatial-Z-VAE/blob/master/pictures/image_pair1547048625.1077194.jpg)![](https://github.com/seasonyc/Spatial-Z-VAE/blob/master/pictures/image_pair1547048623.6556363.jpg)
 ![](https://github.com/seasonyc/Spatial-Z-VAE/blob/master/pictures/image_pair1547048622.0885468.jpg)![](https://github.com/seasonyc/Spatial-Z-VAE/blob/master/pictures/image_pair1547048628.7209263.jpg)

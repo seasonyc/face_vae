@@ -137,9 +137,20 @@ attrs = ['Male', 'Smiling', 'Young', 'Attractive', 'Black_Hair', 'Blond_Hair']
 
 vae_dfc = load_model('face-vae12ch_good_train')
 
+
 # Linear interpolation between 2 portraits
 merge_2(vae_dfc, 'test_attr_trans_from_CelebA/201011.jpg', 'test_attr_trans_from_CelebA/202033.jpg')
+merge_2(vae_dfc, 'test_attr_trans_from_CelebA/202033.jpg', 'test_attr_trans_from_CelebA/201349.jpg')
+merge_2(vae_dfc, 'test_attr_trans_from_CelebA/201349.jpg', 'test_attr_trans_from_CelebA/202016.jpg')
+merge_2(vae_dfc, 'test_attr_trans_from_CelebA/202016.jpg', 'test_attr_trans_from_CelebA/200235.jpg')
+merge_2(vae_dfc, 'test_attr_trans_from_CelebA/200235.jpg', 'test_attr_trans_from_CelebA/201220.jpg')
 merge_2(vae_dfc, 'test_attr_trans_from_CelebA/201220.jpg', 'test_attr_trans_from_CelebA/202595.jpg')
+merge_2(vae_dfc, 'test_attr_trans_from_CelebA/202595.jpg', 'test_attr_trans_from_CelebA/202443.jpg')
+merge_2(vae_dfc, 'test_attr_trans_from_CelebA/202443.jpg', 'test_attr_trans_from_CelebA/201207.jpg')
+merge_2(vae_dfc, 'test_attr_trans_from_CelebA/201207.jpg', 'test_attr_trans_from_CelebA/201278.jpg')
+merge_2(vae_dfc, 'test_attr_trans_from_CelebA/201278.jpg', 'test_attr_trans_from_CelebA/202052.jpg')
+merge_2(vae_dfc, 'test_attr_trans_from_CelebA/202052.jpg', 'test_attr_trans_from_CelebA/201011.jpg')
+
 
 
 # compute attribute vector and translate portrait

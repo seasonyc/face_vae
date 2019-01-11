@@ -51,7 +51,7 @@ def load_index():
 
 def plot_images(images, save_image=True):
     num = len(images)
-    fig = plt.figure(figsize = (num*2,1*2))
+    fig = plt.figure(figsize = (num*2.5,1*2.5))
     i = 1
     for image in images:
         plt.subplot(1, num, i)

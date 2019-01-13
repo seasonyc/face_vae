@@ -31,4 +31,4 @@ More result examples are in https://github.com/seasonyc/Spatial-Z-VAE/tree/maste
 4. Run spatial_z_vae.py to train the vae
 5. Use vae_attribute_manipulate.py to compute attribute vector and translate the portrait. You can use [my trained model](https://github.com/seasonyc/Spatial-Z-VAE/blob/master/trained_face_vae/face_vae_12ch.zip) or train your own.
 
-See the wiki for more technical details.
+See [the wiki](https://github.com/seasonyc/Spatial-Z-VAE/wiki) for more technical details.

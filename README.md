@@ -1,4 +1,4 @@
-# Spatial Z-VAE for face translation
+# Spatial Z VAE for face translation
 This is a VAE, which can generate face with high reconstruction quality by:
 - using face-recognize network output as its perceptual Loss instead of the pixel reconstruction loss, and 
 - using spatial latent vector to keep more infromation.

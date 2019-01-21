@@ -16,10 +16,10 @@ def compute_attribute_vector(vae, attrs, attribute_vectors_file, batch_size = 32
     sess = K.get_session()
     encoder = vae.get_layer('encoder')
     z_shape = K.int_shape(encoder.outputs[0])
-    pos_vectors = np.zeros((len(attrs), z_shape[1], z_shape[2], z_shape[3]), np.float32)
-    neg_vectors = np.zeros((len(attrs), z_shape[1], z_shape[2], z_shape[3]), np.float32)
-    pos_nums = np.zeros((len(attrs), 1, 1, 1), np.int32)
-    neg_nums = np.zeros((len(attrs), 1, 1, 1), np.int32)
+    pos_vectors = np.zeros((len(attrs), z_shape[1]), np.float32)
+    neg_vectors = np.zeros((len(attrs), z_shape[1]), np.float32)
+    pos_nums = np.zeros((len(attrs), 1), np.int32)
+    neg_nums = np.zeros((len(attrs), 1), np.int32)
     
     data, total_num = dataset.load_full_celeba_with_labels('CelebA', batch_size, attrs)
     
@@ -35,8 +35,8 @@ def compute_attribute_vector(vae, attrs, attribute_vectors_file, batch_size = 32
                 neg_idx = np.argwhere(labels[:,i]==-1)[:,0]
                 pos_vec = np.sum(z[pos_idx,:], 0)
                 neg_vec = np.sum(z[neg_idx,:], 0)
-                pos_nums[i][0][0][0] += len(pos_idx)
-                neg_nums[i][0][0][0] += len(neg_idx)
+                pos_nums[i][0] += len(pos_idx)
+                neg_nums[i][0] += len(neg_idx)
                 pos_vectors[i] += pos_vec
                 neg_vectors[i] += neg_vec
         except tf.errors.OutOfRangeError:
@@ -107,7 +107,7 @@ def merge_2(vae, image_file_name1, image_file_name2):
     
     
 
-'''    
+    
 def trans_attributes(vae, image_file_name, attribute_vectors_file, attrs):
     attribute_vectors = np.load(attribute_vectors_file).item()
     image = read_image('CelebA/img_align_celeba/' + image_file_name)
@@ -125,17 +125,22 @@ def trans_attributes(vae, image_file_name, attribute_vectors_file, attrs):
     
 def random(vae):
     z_shape = K.int_shape(vae.get_layer('encoder').outputs[0])
-    z = K.random_normal(shape=(z_shape[1], z_shape[2], z_shape[3]))
+    z = K.random_normal(shape=(z_shape[1],))
     z = z.eval(session=tf.Session())
     z = np.expand_dims(z, axis = 0)
     
     modified_image = vae.get_layer('decoder').predict(z)
     plot_image(img_renorm(modified_image), img_renorm(modified_image))
-'''    
+    
         
-attrs = ['Male', 'Smiling', 'Young', 'Attractive', 'Black_Hair', 'Blond_Hair']  
+attrs = ['Male', 'Smiling', 'Young', 'Attractive', 'Chubby', 'Black_Hair', 'Blond_Hair']  
 
-vae_dfc = load_model('face-vae12ch_good_train')
+vae_dfc = load_model('face-vae-final')
+
+random(vae_dfc)
+random(vae_dfc)
+random(vae_dfc)
+
 
 
 # Linear interpolation between 2 portraits
@@ -154,21 +159,24 @@ merge_2(vae_dfc, 'test_attr_trans_from_CelebA/202052.jpg', 'test_attr_trans_from
 
 
 # compute attribute vector and translate portrait
-compute_attribute_vector(vae_dfc, attrs, 'attribute_vectors_12ch_good.npy')
+compute_attribute_vector(vae_dfc, attrs, 'attribute_vectors_final.npy')
 
-trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202033.jpg', 'attribute_vectors_12ch_good.npy', {'Attractive':1,'Smiling':1})
-trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202443.jpg', 'attribute_vectors_12ch_good.npy', {'Smiling':1})
 
-trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/201207.jpg', 'attribute_vectors_12ch_good.npy', {'Male':1,'Blond_Hair':-1})
-trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/201278.jpg', 'attribute_vectors_12ch_good.npy', {'Male':1})
-trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/201349.jpg', 'attribute_vectors_12ch_good.npy', {'Male':1})
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/199542.jpg', 'attribute_vectors_final.npy', {'Attractive':1,'Smiling':1})
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202443.jpg', 'attribute_vectors_final.npy', {'Smiling':1})
 
-trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/201790.jpg', 'attribute_vectors_12ch_good.npy', {'Male':-1,'Young':1,'Attractive':1})
-trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202016.jpg', 'attribute_vectors_12ch_good.npy', {'Male':-1,'Blond_Hair':1})
-trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/200235.jpg', 'attribute_vectors_12ch_good.npy', {'Male':-1,'Attractive':1})
-trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202052.jpg', 'attribute_vectors_12ch_good.npy', {'Male':-1})
-trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202163.jpg', 'attribute_vectors_12ch_good.npy', {'Male':-1,'Attractive':1})
-trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202516.jpg', 'attribute_vectors_12ch_good.npy', {'Male':-1,'Blond_Hair':1})
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/201207.jpg', 'attribute_vectors_final.npy', {'Male':1,'Black_Hair':1})
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/201278.jpg', 'attribute_vectors_final.npy', {'Male':1})
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/201349.jpg', 'attribute_vectors_final.npy', {'Male':1})
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/199585.jpg', 'attribute_vectors_final.npy', {'Male':1})
+
+
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/201790.jpg', 'attribute_vectors_final.npy', {'Male':-1,'Young':1,'Attractive':1})
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202016.jpg', 'attribute_vectors_final.npy', {'Male':-1,'Blond_Hair':1})
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/200235.jpg', 'attribute_vectors_final.npy', {'Male':-1,'Attractive':1})
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202052.jpg', 'attribute_vectors_final.npy', {'Male':-1})
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202163.jpg', 'attribute_vectors_final.npy', {'Male':-1,'Attractive':1})
+trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202516.jpg', 'attribute_vectors_final.npy', {'Male':-1,'Blond_Hair':1})
 
 
 

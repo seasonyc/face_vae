@@ -29,25 +29,6 @@ def conv_block(x, channels, norm_func, kernel_size = 3, padding = 'same'):
     return x
 
 
-def transpose_conv_block(x, channels, norm_func, kernel_size = 2):
-    x = Conv2DTranspose(channels, kernel_size, padding='valid', strides=(1, 1), use_bias=False)(x)
-    x = norm_func()(x)
-    x = LeakyReLU(alpha=0.1)(x) #alpha=0.2
-    return x
-
-
-def downsampling_res_block(x, channels, norm_func, kernel_size = 3):
-    x = conv_block(x, channels, norm_func=norm_func, kernel_size = 1)
-    x = res_block(x, channels, norm_func=norm_func)
-    x = AveragePooling2D()(x)
-    return x
-
-def upampling_res_block(x, channels, norm_func, kernel_size = 3):
-    x = UpSampling2D()(x)
-    x = conv_block(x, channels, norm_func=norm_func, kernel_size = 1)
-    x = res_block(x, channels, norm_func=norm_func)
-    return x
-
 def res_block(x, channels, norm_func, kernel_size = 3):
     input_x = x
     x = conv_block(x, channels, norm_func=norm_func, kernel_size = kernel_size)
@@ -229,16 +210,7 @@ def test_vae(vae):
         plot_image(img_renorm(input_images), img_renorm(rec_images))
 
 
-
-'''
-
-selected_pm_layers = ['Conv2d_1a_3x3','Conv2d_3b_1x1', 'Conv2d_4b_3x3', 'add_5', 'add_15', 'add_21', 'Bottleneck']
-vae_dfc = train(selected_pm_layers, latent_dim = 100, norm_func = BatchNormalization, deconv_func = upsamp_conv)
-save_model(vae_dfc, 'face-vae' + str(time.time()))
-test_vae(vae_dfc)
-
-'''
-
+# selected_pm_layers = ['Conv2d_1a_3x3','Conv2d_3b_1x1', 'Conv2d_4b_3x3', 'add_5', 'add_15', 'add_21', 'Bottleneck']
 
 
 # selected for calculating the perceptual loss.

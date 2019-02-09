@@ -62,3 +62,7 @@ def plot_images(images, save_image=True):
         plt.savefig('images'+ str(time.time()) + '.jpg')
     plt.show()
 
+
+def show_image(image):
+    plt.imshow(image, interpolation='spline16')
+    plt.show()

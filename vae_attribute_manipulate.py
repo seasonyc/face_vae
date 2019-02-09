@@ -135,12 +135,13 @@ def random(vae):
         
 attrs = ['Male', 'Smiling', 'Young', 'Attractive', 'Chubby', 'Black_Hair', 'Blond_Hair']  
 
+
+
 vae_dfc = load_model('face-vae-final')
 
 random(vae_dfc)
 random(vae_dfc)
 random(vae_dfc)
-
 
 
 # Linear interpolation between 2 portraits
@@ -177,7 +178,5 @@ trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/200235.jpg', 'attribute_ve
 trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202052.jpg', 'attribute_vectors_final.npy', {'Male':-1})
 trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202163.jpg', 'attribute_vectors_final.npy', {'Male':-1,'Attractive':1})
 trans_attribute(vae_dfc, 'test_attr_trans_from_CelebA/202516.jpg', 'attribute_vectors_final.npy', {'Male':-1,'Blond_Hair':1})
-
-
 
 

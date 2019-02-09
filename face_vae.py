@@ -9,7 +9,7 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input, ZeroPadding2D, Activation, Add, Conv2D, Lambda, UpSampling2D, Dense
 from tensorflow.keras.layers import BatchNormalization, LeakyReLU, Conv2DTranspose, AveragePooling2D, Reshape, Flatten 
 from tensorflow.keras.models import Model
-from tensorflow.keras.callbacks import LearningRateScheduler
+from tensorflow.keras.callbacks import LearningRateScheduler, Callback
 from InstanceNormalization import InstanceNormalization
 import dataset
 from utils import save_model, load_model, img_renorm, plot_image
@@ -19,7 +19,7 @@ image_shape = (160, 160, 3)
 
 batch_size = 16
 lr_decay_ratio = 0.43
-epochs=3
+epochs=8
 
 
 def conv_block(x, channels, norm_func, kernel_size = 3, padding = 'same'):
@@ -196,10 +196,18 @@ def train(selected_pm_layers, alpha = 1.0, latent_dim = 1024, learning_rate = 0.
     lr_scheduler = LearningRateScheduler(schedule, verbose=1)
         
     vae_dfc.fit(x_train, epochs=epochs, steps_per_epoch=train_size//batch_size,
-                validation_data=(x_val), validation_steps=val_size//batch_size, callbacks=[lr_scheduler], verbose=1)
+                validation_data=(x_val), validation_steps=val_size//batch_size, callbacks=[lr_scheduler, ModelPreTest()], verbose=1)
 
     return vae_dfc
 
+
+class ModelPreTest(Callback):
+    def __init__(self):
+        super(ModelPreTest, self).__init__()
+
+    def on_epoch_end(self, epoch, logs=None):
+        if epoch == 0:
+            test_vae(self.model)
 
 
 
@@ -212,12 +220,11 @@ def test_vae(vae):
 
 # selected_pm_layers = ['Conv2d_1a_3x3','Conv2d_3b_1x1', 'Conv2d_4b_3x3', 'add_5', 'add_15', 'add_21', 'Bottleneck']
 
-
 # selected for calculating the perceptual loss.
 selected_pm_layers = ['Conv2d_1a_3x3', 'Conv2d_2b_3x3', 'Conv2d_4a_3x3', 'Conv2d_4b_3x3', 'Bottleneck']
-
 vae_dfc = train(selected_pm_layers, alpha = 1, latent_dim = 1024, learning_rate = 0.00033)
 save_model(vae_dfc, 'face-vae' + str(time.time()))
+#vae_dfc = load_model('face-vae-final')
 test_vae(vae_dfc)
 
 
